@@ -36,3 +36,6 @@ export interface AxiosError extends Error {
     request?: any
     response?: AxiosResponse
 }
+
+export interface Axios {
+}
