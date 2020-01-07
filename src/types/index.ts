@@ -100,6 +100,8 @@ export interface RejectedFn {
   export interface CancelToken {
         promise: Promise<Cancel>
         reason?: Cancel
+        
+        throwIfRequested () :void
         }
         
   export interface Canceler {
