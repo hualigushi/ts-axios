@@ -98,8 +98,8 @@ export interface RejectedFn {
         }
         
   export interface CancelToken {
-        promise: Promise<string>
-        reason?: string
+        promise: Promise<Cancel>
+        reason?: Cancel
         }
         
   export interface Canceler {
