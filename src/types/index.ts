@@ -105,3 +105,14 @@ export interface RejectedFn {
         export interface CancelExecutor {
         (cancel: Canceler): void
         }
+        
+   export interface CancelTokenSource {
+        token: CancelTooken
+        cancel: Canceler
+        }
+        
+        export interface CancelTokenStatic {
+           new(executor: CancelExecutor): cancelToken
+        
+        source():CancelTokenSource
+        }
