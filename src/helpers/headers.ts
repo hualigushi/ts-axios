@@ -1,7 +1,18 @@
 import { isPlainObject, deepMerge } from './util'
 import { Method } from '../types'
 
-// 规范化content-type 为 Content-Type
+// 请求 header 属性是大小写不敏感的，规范化content-type 为 Content-Type
+/* axios({
+    method: 'post',
+    url: '/base/post',
+    headers: {
+      'content-type': 'application/json;charset=utf-8'
+    },
+    data: {
+      a: 1,
+      b: 2
+    }
+  }) */
 function normalizeHeaderName(headers: any, normalizeName: string): void {
     if (!headers) {
         return
@@ -13,6 +24,9 @@ function normalizeHeaderName(headers: any, normalizeName: string): void {
         }
     })
 }
+
+// 当我们传入的 data 为普通对象的时候，headers 如果没有配置 Content-Type 属性，
+// 需要自动设置请求 header 的 Content-Type 字段为：application/json;charset=utf-8
 export function processHeaders(headers: any, data: any): any {
     normalizeHeaderName(headers, 'Content-Type')
 

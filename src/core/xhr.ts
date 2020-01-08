@@ -5,12 +5,13 @@ import { isURLSameOrigin } from '../helpers/url'
 import cookie from '../helpers/cookie'
 import { isFormData } from '../helpers/util'
 
+// 请求逻辑
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => { // 返回Promise
         const {
             data = null,
             url,
-            method = 'get',
+            method = 'get', // 默认值
             headers,
             responseType,
             timeout,
@@ -22,7 +23,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             onUploadProgress,
             auth,
             validateStatus
-        } = config
+        } = config // 通过解构赋值的语法从 config 中拿到对应的属性值赋值给变量
         
         const request = new XMLHttpRequest()
 
@@ -40,7 +41,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
         function configureRequest(): void {
             if (responseType) {
-                request.responseType = responseType
+                request.responseType = responseType // 返回数据类型设置
             }
 
             if (timeout) {
@@ -63,6 +64,17 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                     return
                 }
 
+                /* XMLHttpRequest 对象的 getAllResponseHeaders 方法获取到的值是一段字符串
+                每一行都是以回车符和换行符 \r\n 结束，它们是每个 header 属性的分隔符
+                需要解析成对象
+                {
+                    date: 'Fri, 05 Apr 2019 12:40:49 GMT'
+                    etag: 'W/"d-Ssxx4FRxEutDLwo2+xkkxKc4y0k"',
+                    connection: 'keep-alive',
+                    'x-powered-by': 'Express',
+                    'content-length': '13'
+                    'content-type': 'application/json; charset=utf-8'
+                  } */
                 const responseHeaders = parseHeaders(request.getAllResponseHeaders())
                 const responseData = responseType !== 'text' ? request.response : request.responseText
                 const response: AxiosResponse = {
@@ -70,7 +82,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                     status: request.status,
                     statusText: request.statusText,
                     headers: responseHeaders,
-                    config,
+                    config, 
                     request
                 }
                 handleResponse(response)
@@ -111,6 +123,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             }
 
             Object.keys(headers).forEach((name) => {
+                // data为空是，设置Content-Type没有意义
                 if (data === null && name.toLowerCase() === 'content-type') { // data为空时，content是没有意义的，删除
                     delete headers[name]
                 } else {

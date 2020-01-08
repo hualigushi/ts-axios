@@ -34,4 +34,5 @@ axios.spread = function spread (callback) {
 
 axios.Axios = Axios
 
+// 整个库入口
 export default axios

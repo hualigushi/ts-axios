@@ -1,9 +1,10 @@
-const toString = Object.prototype.toString // 方法缓存
+const toString = Object.prototype.toString // 方法缓存, 不需要反复地从Object开始一层层地访问
 
-export function isDate(val: any): val is Date { // val is Date类型保护
+export function isDate(val: any): val is Date { // val is Date 类型保护
     return toString.call(val) === '[object Date]'
 }
 
+//  isObject 的判断方式，对于 FormData、ArrayBuffer 这些类型，isObject 判断也为 true
 // export function isObject(val: any):val is Object {
 //     return val !== null && typeof val === 'object'
 // }
@@ -12,12 +13,12 @@ export function isPlainObject(val: any): val is Object {
     return toString.call(val) === '[object Object]'
 }
 
-export function isFormData (val: any): val is FormData {
+export function isFormData(val: any): val is FormData {
     return typeof val !== 'undefined' && val instanceof FormData
 }
 
-export function isURLSearchParams (val: any): val is URLSearchParams {
-    return typeof val !== 'undefined' && val instanceof URLSearchParams 
+export function isURLSearchParams(val: any): val is URLSearchParams {
+    return typeof val !== 'undefined' && val instanceof URLSearchParams
 }
 
 export function extend<T, U>(to: T, from: U): T & U {

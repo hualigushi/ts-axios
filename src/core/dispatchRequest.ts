@@ -23,7 +23,7 @@ export function transformURL(config: AxiosRequestConfig): string {
    if (baseURL && !isAbsoluteURL(url!)) {
       url = combineURL(baseURL, url)
    }
-  return buildURL(url!, params, paramsSerializer) // ! 类型断言，不为空
+  return buildURL(url!, params, paramsSerializer) // ! 类型断言，确定参数不为空
 }
 function transformResponseData(res: AxiosResponse): AxiosResponse {
   res.data = transform(res.data, res.headers, res.config.transfromResponse)
