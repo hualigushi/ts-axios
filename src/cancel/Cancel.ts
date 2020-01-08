@@ -1,11 +1,11 @@
 export default class Cancel {
-message? :string
+    message?: string
 
-constructor (message?: string) {
- this.message = message
-}
+    constructor(message?: string) {
+        this.message = message
+    }
 }
 
-export function isCancel (value: any):boolean {
-return value instanceof Cancel
+export function isCancel(value: any): boolean {
+    return value instanceof Cancel
 }

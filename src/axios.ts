@@ -15,10 +15,11 @@ function createInstance(config: AxiosRequestConfig): AxiosStatic {
     return instance as AxiosStatic
 }
 const axios = createInstance(defaults)
-axios.create = function create (config) {
+axios.create = function create(config: AxiosRequestConfig): AxiosStatic {
     return createInstance(mergeConfig(defaults, config))
 }
-axios.CancelToken = Cancel
+axios.CancelToken = CancelToken
+axios.Cancel = Cancel
 axios.isCancel = isCancel
 
 export default axios
