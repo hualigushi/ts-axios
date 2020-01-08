@@ -1,4 +1,4 @@
-import { isDate, isPlainObject } from './util'
+import { isDate, isPlainObject, isURLSearchParams } from './util'
 
 interface URLOrigin {
     protocol: string
@@ -16,12 +16,19 @@ function encode(val: string): string {
         .replace(/%5D/ig, ']')
 }
 
-export function buildURL(url: string, params?: any): string {
+export function buildURL(url: string, params?: any， paramsSerializer?: (params: any) => string): string {
     if (!params) {
         return url
     }
 
-    const parts: string[] = []
+    let serializedParams
+
+    if (paramsSerializer) {
+        serializedParams = paramsSerializer(params)
+    } else if (isURLSearchParams (params)) {
+   serializedParams = params.toString()
+    }else {
+        const parts: string[] = []
 
     Object.keys(params).forEach((key) => {
         const val = params[key]
@@ -45,7 +52,9 @@ export function buildURL(url: string, params?: any): string {
         })
     })
 
-    let serializedParams = parts.join('&')
+    serializedParams = parts.join('&')
+    }
+    
     if (serializedParams) {
         const markIndex = url.indexOf('#') // url中如果有#,则#后面的字符忽略
         if (markIndex !== -1) {
