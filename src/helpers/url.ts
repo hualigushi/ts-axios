@@ -121,9 +121,18 @@ export function buildURL(url: string, params?: any, paramsSerializer?: (params: 
 
     let serializedParams
 
+    /* 自定义参数序列化
+
+    对请求的 url 参数做了处理，我们会解析传入的 params 对象，
+    根据一定的规则把它解析成字符串，然后添加在 url 后面。
+    在解析的过程中，我们会对字符串 encode，但是对于一些特殊字符比如 @、+ 等却不转义，
+    这是 axios 库的默认解析规则。
+    当然，我们也希望自己定义解析规则，
+    于是我们希望 ts-axios 能在请求配置中允许我们配置一个 paramsSerializer 函数
+    来自定义参数的解析规则，该函数接受 params 参数，返回值作为解析后的结果， */
     if (paramsSerializer) {
         serializedParams = paramsSerializer(params)
-    } else if (isURLSearchParams(params)) {
+    } else if (isURLSearchParams(params)) { // 如果它是一个 URLSearchParams 对象实例的话，我们直接返回它 toString 后的结果
         serializedParams = params.toString()
     } else {
         const parts: string[] = []
@@ -165,13 +174,18 @@ export function buildURL(url: string, params?: any, paramsSerializer?: (params: 
 }
 
 export function isAbsoluteURL(url: string): boolean {
-    return /(^[a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+    return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+    
 }
 
 export function combineURL(baseURL: string, relativeURL?: string): string {
     return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
 }
 
+
+/* 同域名的判断主要利用了一个技巧，创建一个 a 标签的 DOM，然后设置 href 属性为我们传入的 url，
+然后可以获取该 DOM 的 protocol、host。当前页面的 url 和请求的 url 都通过这种方式获取，
+然后对比它们的 protocol 和 host 是否相同即可。 */
 export function isURLSameOrigin(requestURL: string): boolean {
     const parsedOrgin = resolveURL(requestURL)
     return (parsedOrgin.protocol === currentOrigin.protocol &&

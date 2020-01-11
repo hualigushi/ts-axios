@@ -1,11 +1,10 @@
 import axios, { AxiosTransformer } from '../../src/index';
-import qs from 'querystring';
+import qs from 'qs';
 
 /**
  * example-1
  */
-axios.defaults.headers.common['test2'] = 123;
-
+// axios.defaults.headers.common['test2'] = 123;
 // axios({
 //   method: 'post',
 //   url: '/config/post',

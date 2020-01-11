@@ -21,10 +21,11 @@ export class AxiosError extends Error {
         this.request = request
         this.response = response
         this.isAxiosError = true
-        Object.setPrototypeOf(this, AxiosError.prototype)
+        Object.setPrototypeOf(this, AxiosError.prototype) // 解决typescript的一个坑，继承内置对象是产生的
     }
 }
 
+// 对外暴露 createError 的工厂方法
 export function createError(message: string,
     config: AxiosRequestConfig,
     code?: string | null,

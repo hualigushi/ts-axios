@@ -11,7 +11,7 @@ app.use(cookieParse());
 const router = express.Router();
 
 const CORS = {
-  'Access-Control-Allow-Origin': 'http://localhost:8071',
+  'Access-Control-Allow-Origin': 'http://localhost:8080',
   'Access-Control-Allow-Credentials': true,
   'Access-Control-Allow-Method': 'POST, GET, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',

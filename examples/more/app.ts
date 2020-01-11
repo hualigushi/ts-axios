@@ -6,11 +6,11 @@ import qs from 'qs';
  * CORS
  */
 // document.cookie = 'a=b';
-//
+
 // axios.get('/more/get').then(res => {
 //   console.log(res);
 // });
-//
+
 // axios.post('http://localhost:8088/more/server2', {}, {
 //   withCredentials: true,
 // }).then(res => {
@@ -111,56 +111,56 @@ import qs from 'qs';
 /**
  * 自定义状态码校验规则
  */
-axios.get('/more/304').then(res => {
-  console.log(res);
-}).catch((e: AxiosError) => {
-  console.log(e.message);
-});
+// axios.get('/more/304').then(res => {
+//   console.log(res);
+// }).catch((e: AxiosError) => {
+//   console.log(e.message);
+// });
 
-axios.get('/more/304', {
-  validateStatus(status) {
-    return status >= 200 && status < 400;
-  }
-}).then(res => {
-  console.log(res);
-}).catch((e: AxiosError) => {
-  console.log(e.message);
-});
+// axios.get('/more/304', {
+//   validateStatus(status) {
+//     return status >= 200 && status < 400;
+//   }
+// }).then(res => {
+//   console.log(res);
+// }).catch((e: AxiosError) => {
+//   console.log(e.message);
+// });
 
 /**
  * 自定义参数序列化
  */
-// axios.get('/more/get', {
-//   params: new URLSearchParams('a=b&c=d')
-// }).then(res => {
-//   console.log(res);
-// });
-//
-// axios.get('/more/get', {
-//   params: {
-//     a: 1,
-//     b: 2,
-//     c: ['a', 'b', 'c']
-//   }
-// }).then(res => {
-//   console.log(res);
-// });
-//
-// const instance = axios.create({
-//   paramsSerializer(params) {
-//     return qs.stringify(params, { arrayFormat: 'brackets' });
-//   }
-// });
-//
-// instance.get('/more/get', {
-//   params: {
-//     a: 1,
-//     b: 2,
-//     c: ['a', 'b', 'c']
-//   }
-// }).then(res => {
-//   console.log(res);
-// });
+axios.get('/more/get', {
+  params: new URLSearchParams('a=b&c=d')
+}).then(res => {
+  console.log(res);
+});
+
+axios.get('/more/get', {
+  params: {
+    a: 1,
+    b: 2,
+    c: ['a', 'b', 'c']
+  }
+}).then(res => {
+  console.log(res);
+});
+
+const instance = axios.create({
+  paramsSerializer(params) {
+    return qs.stringify(params, { arrayFormat: 'brackets' });
+  }
+});
+
+instance.get('/more/get', {
+  params: {
+    a: 1,
+    b: 2,
+    c: ['a', 'b', 'c']
+  }
+}).then(res => {
+  console.log(res);
+});
 
 /**
  * BaseURL
@@ -168,10 +168,10 @@ axios.get('/more/304', {
 // const instance = axios.create({
 //   baseURL: 'http://img.mukewang.com/'
 // });
-//
+
 // // 请求相对地址会自动加上BaseURL
 // instance.get('5cc01a7b0001a33718720632.jpg');
-//
+
 // // 请求绝对地址BaseURL会自动失效
 // instance.get('http://img.mukewang.com/5cc01a7b0001a33718720632.jpg');
 
