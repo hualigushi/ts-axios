@@ -23,16 +23,15 @@ function fromVal2Strat(val1: any, val2: any): any {
 未来我们讲到认证授权的时候，auth 属性也是这个合并策略。 */
 function deepMergeStrat(val1: any, val2: any): any {
     if (isPlainObject(val2)) {
-        return deepMerge(val1, val2)
+      return deepMerge(val1, val2)
     } else if (typeof val2 !== 'undefined') {
-        return val2
+      return val2
     } else if (isPlainObject(val1)) {
-        return deepMerge(val1)
-    } else if (typeof val1 !== 'undefined') {
-        return val1
+      return deepMerge(val1)
+    } else {
+      return val1
     }
-}
-
+  }
 const stratKeysFromVal2 = ['url', 'params', 'data']
 
 stratKeysFromVal2.forEach(key => {

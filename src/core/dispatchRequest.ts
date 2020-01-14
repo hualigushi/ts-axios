@@ -7,9 +7,15 @@ import transform from './transform'
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   throwIfCancellationRequested(config)
   processConfig(config) // 处理config
-  return xhr(config).then((res) => {
+  return xhr(config).then(res => {
     return transformResponseData(res)
-  })
+  },
+    e => { // 对异常情况的响应数据做转换
+      if (e && e.response) {
+        e.response = transformResponseData(e.response)
+      }
+      return Promise.reject(e)
+    })
 }
 
 function processConfig(config: AxiosRequestConfig): void {
@@ -31,9 +37,9 @@ export function transformURL(config: AxiosRequestConfig): string {
   }
   console.log(axios.getUri(fakeConfig))
   // https://www.baidu.com/user/12345?idClient=1&idTest=2&testString=thisIsATest */
-   if (baseURL && !isAbsoluteURL(url!)) {
-      url = combineURL(baseURL, url)
-   }
+  if (baseURL && !isAbsoluteURL(url!)) {
+    url = combineURL(baseURL, url)
+  }
   return buildURL(url!, params, paramsSerializer) // ! 类型定义中url是可选参数，但是运行到这里，可以确定url参数不为空，所以使用类型断言
 }
 function transformResponseData(res: AxiosResponse): AxiosResponse {

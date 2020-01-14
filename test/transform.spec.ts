@@ -1,81 +1,94 @@
-import axios. { AxiosResponse, AxiosTransformer } from '../src/index'
+import axios, { AxiosResponse, AxiosTransformer } from '../src/index'
 import { getAjaxRequest } from './helper'
 
 describe('transform', () => {
-     beforeEach(() => {
-         jasmine.Ajax.install()
-     })
+  beforeEach(() => {
+    jasmine.Ajax.install()
+  })
 
-      afterEach(() => {
-          jasmine.Ajax.uninstall()
-     })
+  afterEach(() => {
+    jasmine.Ajax.uninstall()
+  })
 
-      test('should transform JSON to string', () => {
-          const data = {
-           foo: bar'
-          }
+  test('should transform JSON to string', () => {
+    const data = {
+      foo: 'bar'
+    }
 
-          axios.post('/foo', data)
+    axios.post('/foo', data)
 
-          getAjaxRequest().then(request => {
-             request.respondWith({
-                status: 200,
-                responseText: '{"foo": "bar"}'
-             })
+    return getAjaxRequest().then(request => {
+      expect(request.params).toBe('{"foo":"bar"}')
+    })
+  })
 
-             setTimeout(() => {
-                  expect(typeof response.data).toBe('object')
-                  expect(respose.data.foo).toBe('bar')
-                  doen()
-             }, 100)
-          })
+  test('should transform string to JSON', done => {
+    let response: AxiosResponse
+
+    axios('/foo').then(res => {
+      response = res
+    })
+
+    getAjaxRequest().then(request => {
+      request.respondWith({
+        status: 200,
+        responseText: '{"foo": "bar"}'
       })
 
-       test('should override default transform', () => {
-            const data = {
-                foo: '/bar'
-            }
+      setTimeout(() => {
+        expect(typeof response.data).toBe('object')
+        expect(response.data.foo).toBe('bar')
+        done()
+      }, 100)
+    })
+  })
 
-            axios.post('/foo', data, {
-                  transformReauest(data) {
-                      return data
-                  }
-            })
+  test('should override default transform', () => {
+    const data = {
+      foo: 'bar'
+    }
 
-             return getAjaxRequest().then(request => {
-                expect(request.params).toEqual({foo: 'bar'})
-            })
-       })
+    axios.post('/foo', data, {
+      transformRequest(data: any) {
+        return data
+      }
+    })
 
-       test('should allow an Array of transformers', () => {
-            const data = {
-                foo: '/bar'
-            }
+    return getAjaxRequest().then(request => {
+      expect(request.params).toEqual({ foo: 'bar' })
+    })
+  })
 
-             axios.post('/foo', data, {
-                 transformRequest: (axios.defaults.transformRequest as AxiosTransformer[]).concat(function(data) {
-                       return data.replace('bar', 'baz')
-                 })
-             })
-             return getAjaxRequest().then(request => {
-                  expect(request.params).toBe('{"foo":"baz"}')
-              })
-       })
+  test('should allow an Array of transformers', () => {
+    const data = {
+      foo: 'bar'
+    }
 
-       test('should allowing mutating headers', () => {
-            const token = Math.floor(Math.random() * Math.pow(2, 64)).toString(36)
+    axios.post('/foo', data, {
+      transformRequest: (axios.defaults.transformRequest as AxiosTransformer[]).concat(function(
+        data
+      ) {
+        return data.replace('bar', 'baz')
+      })
+    })
 
-            axios('/foo', {
-                transform: (data, headers) => {
-                  transformRequest: (data, headers) => {
-                      headers['X-Authization'] = token
-                      return data
-                  }
-               })
+    return getAjaxRequest().then(request => {
+      expect(request.params).toBe('{"foo":"baz"}')
+    })
+  })
 
-            return getAjaxRequest().then(request => {
-                  expect(request.requestHeaders['X-Authorization']).toEqual(token)
-             })
-            
-        })
+  test('should allowing mutating headers', () => {
+    const token = Math.floor(Math.random() * Math.pow(2, 64)).toString(36)
+
+    axios('/foo', {
+      transformRequest: (data: any, headers: { [x: string]: string }) => {
+        headers['X-Authorization'] = token
+        return data
+      }
+    })
+
+    return getAjaxRequest().then(request => {
+      expect(request.requestHeaders['X-Authorization']).toEqual(token)
+    })
+  })
 })

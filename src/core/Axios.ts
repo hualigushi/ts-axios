@@ -68,7 +68,7 @@ export default class Axios {
             config = url
         }
         config = mergeConfig(this.defaults, config)
-        
+        config.method = config.method.toLowerCase()// 发送请求的 method 需要转换成小写字符串，这么做的目的也是为了之后 flattenHeaders 能正常处理这些 method
 
         /* 拦截器链式调用
         首先，构造一个 PromiseChain 类型的数组 chain，并把 dispatchRequest 函数赋值给 resolved 属性；

@@ -19,8 +19,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         const {
             data = null,
             url,
-            method = 'get', // 默认值
-            headers,
+            method, 
+            headers = {},
             responseType,
             timeout,
             cancelToken,
@@ -35,7 +35,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         
         const request = new XMLHttpRequest()
 
-        request.open(method.toUpperCase(), url!, true)
+        request.open(method!.toUpperCase(), url!, true)
 
         configureRequest()
 
@@ -90,7 +90,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                     'content-type': 'application/json; charset=utf-8'
                   } */
                 const responseHeaders = parseHeaders(request.getAllResponseHeaders())
-                const responseData = responseType !== 'text' ? request.response : request.responseText
+                const responseData = responseType && responseType !== 'text' ? request.response : request.responseText
                 const response: AxiosResponse = {
                     data: responseData,
                     status: request.status,
@@ -108,7 +108,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
             // 超时错误
             request.ontimeout = function handleTimeout() {
-                reject(createError(`Timeout of ${timeout} ms exceed`, config, 'ECONNABRTED', request))
+                reject(createError(`Timeout of ${timeout} ms exceeded`, config, 'ECONNABRTED', request))
             }
 
             if (onDownloadProgress) {

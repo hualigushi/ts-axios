@@ -9,12 +9,12 @@ describe('promise', () => {
        })
 
        setTimeout(() => {
-          expect(fulfilled).toBetruthy()
+          expect(fulfilled).toBeTruthy()
           done()
        },100)
     })
 
-    test('should support spread'. done => {
+    test('should support spread', done => {
         let sum =0
         let fulfilled = false
         let result: any
