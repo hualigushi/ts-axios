@@ -1,6 +1,14 @@
 # 项目介绍
 用 typescript 实现 axios 浏览器部分，完善的 demo 与单元测试
 
+## 使用
+
+`npm install`
+
+`npm run dev`
+
+`localshost:8080` 查看效果
+
 # ts-axios
 采用 Promise API
 请求和响应配置化
@@ -49,6 +57,3 @@ cd ts-axios
 
 npm install
 ```
-
-# 单元测试
-helpers 模块测试用例编写完毕
