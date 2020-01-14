@@ -7,7 +7,7 @@ describe('cancel:Cancel', () => {
      })
 
    test('should returns true if values is a Cancel', () => {
-        expect(isCancel(new Cancel())).toBeTruthy
+        expect(isCancel(new Cancel())).toBeTruthy()
     })
 
   test('should returns false if valus is not Cancel', () =>{
